@@ -58,7 +58,7 @@ do
     echo "Reopen autonavi......."
     adb -s $serialNumber shell am start -n com.autonavi.minimap/.MapActivity
 
-    adb -s $serialNumber shell monkey -p com.autonavi.minimap  --bugreport  --ignore-timeouts  --ignore-security-exceptions  --monitor-native-crashes  --kill-process-after-error -s $i  --pct-syskeys 1 --pct-motion 2 --pct-touch 80 --throttle 200  -v -v 100 | tee "./$1/compatibility-$i.txt"
+    adb -s $serialNumber shell monkey -p com.autonavi.minimap  --bugreport  --ignore-timeouts  --ignore-security-exceptions  --monitor-native-crashes  --kill-process-after-error -s $i  --pct-syskeys 1 --pct-motion 2 --pct-touch 80 --throttle 200  -v -v 100 | tee "./$serialNumber/compatibility-$i.txt"
 
 
     echo "Reinstall......."
@@ -76,13 +76,13 @@ do
     adb -s $serialNumber shell am start -n com.autonavi.minimap/.MapActivity
     sleep 3
 
-    adb -s $serialNumber logcat -d > "./$1/logcat-compatibility-$i.txt"
+    adb -s $serialNumber logcat -d > "./$serialNumber/logcat-compatibility-$i.txt"
 
-    grep "FATAL" "./$1/logcat-compatibility-$i.txt"
+    grep "FATAL" "./$serialNumber/logcat-compatibility-$i.txt"
     if [ $? == 0 ]
     then
     let failuerCount+=1;
-    echo "Crash Found in log ./$1/logcat-compatibility-$i.txt" >> "fail.txt"
+    echo "Crash Found in log ./$$serialNumber/logcat-compatibility-$i.txt" >> "fail.txt"
     echo "Crash Found";
     continue;
     fi
