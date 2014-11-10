@@ -82,7 +82,7 @@ do
     if [ $? == 0 ]
     then
     let failuerCount+=1;
-    echo "Crash Found in log ./$$serialNumber/logcat-compatibility-$i.txt" >> "fail.txt"
+    echo "Crash Found in log ./$serialNumber/logcat-compatibility-$i.txt" >> "fail.txt"
     echo "Crash Found";
     continue;
     fi
