@@ -1,10 +1,14 @@
 failuerCount=0;
-
+time=`date '+%Y-%m-%d-%H-%M-%S'`
 for((i=0;i<100;i++));
 do
 
 if [ ! -d "./$1" ]; then
     mkdir "./$1"
+fi
+
+if [ ! -d "./crash" ]; then
+mkdir "./crash"
 fi
 
 echo "This is test $i"
@@ -20,7 +24,7 @@ adb -s $1 install $2 | grep "Success"
 if [ $? != 0 ]
 	then
        let failuerCount+=1;
-       echo "Round "$failuerCount" FAIL" >> "fail.txt"
+       echo "Round "$failuerCount" FAIL" >> "fail_$time.txt"
        echo "INSTALL FAIL";
        continue;
 	fi
@@ -43,7 +47,7 @@ adb -s $1 install -r $2 | grep "Success"
 if [ $? != 0 ]
 then
 let failuerCount+=1;
-echo "Round "$failuerCount" FAIL" >> "fail.txt"
+echo "Round "$failuerCount" FAIL" >> "fail_$time.txt"
 echo "INSTALL FAIL";
 continue;
 fi
@@ -55,12 +59,14 @@ sleep 3
 
 adb -s $1 logcat -d > "./$1/logcat-compatibility-$i.txt"
 
-grep "FATAL" "./$1/logcat-compatibility-$i.txt"
+grep  -E "CRASH:|not responding|new native crash detected|native_crash|unexpected power cycle" "./$1/compatibility-$i.txt"
 if [ $? == 0 ]
 then
 let failuerCount+=1;
-echo "Crash Found in log ./$1/logcat-compatibility-$i.txt" >> "fail.txt"
+echo "Crash Found in log ./$1/logcat-compatibility-$i.txt" >> "fail_$time.txt"
 echo "Crash Found";
+cp  ./$1/logcat-compatibility-$i.txt ./crash
+cp  ./$1/logcat-compatibility-$i.txt ./crash
 continue;
 fi
 
