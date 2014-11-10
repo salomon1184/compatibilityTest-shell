@@ -21,3 +21,9 @@ compatibilityTest-shell
    第二版，支持多机，自动扫描手机
      sh compatibility2.sh  apkpath
      sh compatibility2.sh test.apk 
+     
+     
+     
+未来扩展：
+1. 增加提示信息：错误参数或者没有参数，显示提示信息
+2. 优化多机推入后台，以并行执行
